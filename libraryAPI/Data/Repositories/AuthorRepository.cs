@@ -16,15 +16,21 @@ namespace libraryAPI.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<AuthorRequest> AddAuthor(AuthorRequest authorRequest)
+        public async Task<AuthorRequest> Add(AuthorRequest authorRequest)
         {
-            var author = _mapper.Map<Author>(authorRequest);
+            try
+            {
 
-            // إضافة الكائن   إلى قاعدة البيانات
-            await _context.Authors.AddAsync(author);
-            await _context.SaveChangesAsync();
-
+                var author = _mapper.Map<Author>(authorRequest);
+                // إضافة الكائن   إلى قاعدة البيانات
+                await _context.Authors.AddAsync(author);
+                await _context.SaveChangesAsync();
             return authorRequest;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
         }
 

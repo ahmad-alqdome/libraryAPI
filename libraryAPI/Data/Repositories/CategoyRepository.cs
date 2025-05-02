@@ -24,9 +24,11 @@ namespace libraryAPI.Data.Repositories
             return categoryDto;
         }
 
-        public Task<CategoryDto> DeleteById(int id)
+        public async Task<CategoryDto> DeleteById(int id)
         {
-            throw new NotImplementedException();
+            var item =await  _context.Categories.FindAsync(id);
+            var categoryDt=_mapper.Map<CategoryDto>(item);
+            return  categoryDt;
         }
 
         public async Task<IList<CategoryDto>> GetAll()
@@ -36,14 +38,27 @@ namespace libraryAPI.Data.Repositories
            return  Categories;
         }
 
-        public Task<CategoryDto> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+   
 
-        public Task<CategoryDto> Update(int id, CategoryDto authorRequest)
+        public async Task<CategoryDto> Update(int id, CategoryDto categoryDto)
         {
-            throw new NotImplementedException();
+            // Retrieve the existing author by ID
+            var existingCategory = await _context.Categories.FindAsync(id);
+            if (existingCategory == null)
+            {
+                throw new KeyNotFoundException("Author not found");
+            }
+
+            // Map the updated values from authorRequest to the existing author
+            _mapper.Map(categoryDto, existingCategory);
+
+            // Save the changes to the database
+            await _context.SaveChangesAsync();
+
+            // Map the updated entity to AuthorResponse
+            var categoryResponse = _mapper.Map<CategoryDto>(existingCategory);
+
+            return categoryResponse;
         }
     }
 }

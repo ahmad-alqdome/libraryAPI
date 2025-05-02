@@ -21,9 +21,15 @@ namespace libraryAPI.Mappig
                 .ForMember(dest=>dest.CategoryId , opt=>opt.MapFrom(src=>src.CategoryId));
             CreateMap<Category, CategoryDto>();
                 
-    
+            CreateMap<BookRequest, Book>()
+                .ForMember(dest =>dest.BookPhoto , opt => opt.MapFrom(src => ConvertToByteArray(src.BookPhoto)));
 
-         }
+
+            CreateMap<Book, BookResponse>()
+              .ForMember(dest => dest.BookPhoto, opt => opt.MapFrom(src => src.BookPhoto != null ? Convert.ToBase64String(src.BookPhoto) : null))
+              .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.Name))
+              .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName));
+        }
 
         private static byte[] ConvertToByteArray(IFormFile file)
         {

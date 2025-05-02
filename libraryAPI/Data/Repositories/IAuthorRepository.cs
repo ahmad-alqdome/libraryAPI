@@ -4,7 +4,7 @@ namespace libraryAPI.Data.Repositories
 {
     public interface IAuthorRepository
     {
-        Task<AuthorRequest> AddAuthor(AuthorRequest author);
+        Task<AuthorRequest> Add(AuthorRequest author);
         Task<IList<AuthorResponse>> GetAll();
         Task<AuthorResponse> GetById(int id);
         Task<AuthorResponse> Update(int id, AuthorRequest authorRequest); 

@@ -1,12 +1,14 @@
+using FluentValidation.AspNetCore;
 using libraryAPI;
 using libraryAPI.Data.Repositories;
+using libraryAPI.Entities.Dtos;
+using libraryAPI.Validation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,16 +23,24 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICategoyRepository, CategoyRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", policy =>
     {
-        policy.WithOrigins("http://127.0.0.1:5500") // Replace with allowed origins
+        policy.AllowAnyOrigin() // Replace with allowed origins
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
+
+// validation
+builder.Services.AddControllers().AddFluentValidation(config => { 
+    config.RegisterValidatorsFromAssemblyContaining<AuthorRequestValidator>(); }
+);
+
+
 
 /*****************************************************************************/
 var app = builder.Build();

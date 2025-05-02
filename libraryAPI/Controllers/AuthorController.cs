@@ -19,7 +19,10 @@ namespace libraryAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAsync([FromForm] AuthorRequest authorRequest)
         {
-            var result  = await _authorRepository.AddAuthor(authorRequest);
+            if (!ModelState.IsValid)
+                return BadRequest("Hello"); // Return BadRequest instead of Ok to indicate validation failure
+
+            var result = await _authorRepository.Add(authorRequest);
 
             return Ok(result);
         }

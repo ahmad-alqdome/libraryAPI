@@ -29,5 +29,19 @@ namespace libraryAPI.Controllers
 
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id , [FromBody] CategoryDto categoryDto)
+        {
+            return Ok(await _categoyRepository.Update(id, categoryDto));
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id )
+        {
+            return Ok(await _categoyRepository.DeleteById(id));
+        }
+
+
     }
 }
