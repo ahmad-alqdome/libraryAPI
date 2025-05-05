@@ -1,7 +1,6 @@
 using FluentValidation.AspNetCore;
 using libraryAPI;
-using libraryAPI.Data.Repositories;
-using libraryAPI.Entities.Dtos;
+using libraryAPI.Persistence;
 using libraryAPI.Validation;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,15 +14,15 @@ builder.Services.AddSwaggerGen();
 
 /****************************************************************************/
 
+builder.Services.AddDependencies(builder.Configuration);
 
 var sqlConnect = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<ApplicationDbContext>(op => op.UseSqlServer(sqlConnect));
 
-builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
-builder.Services.AddScoped<ICategoyRepository, CategoyRepository>();
-builder.Services.AddScoped<IBookRepository, BookRepository>();
+//builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+//builder.Services.AddScoped<ICategoyRepository, CategoyRepository>();
+//builder.Services.AddScoped<IBookRepository, BookRepository>();
 
 builder.Services.AddCors(options =>
 {
@@ -47,10 +46,10 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
-{
+{}
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 app.UseCors("AllowSpecificOrigins");
 

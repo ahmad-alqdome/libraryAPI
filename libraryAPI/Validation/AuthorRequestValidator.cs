@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using libraryAPI.Entities.Dtos;
+using libraryAPI.Contract.Author;
 
 namespace libraryAPI.Validation
 {
